@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // 🌍 Global environment variables (can be overridden from Jenkins UI)
-        BASE_URL    = credentials('baseurl-env')      // or use System.getenv('BASE_URL')
+        BASE_URL    = credentials('baseurl-env')
         TEST_USER   = credentials('testuser-env')
         TEST_PASS   = credentials('testpass-env')
         BROWSER     = 'chrome'
@@ -11,8 +10,8 @@ pipeline {
     }
 
     tools {
-        maven 'Maven_3.9'   // Make sure Maven_3.9 is installed under Jenkins → Global Tool Configuration
-        jdk 'jdk17'         // Your configured JDK in Jenkins
+        maven 'Maven_3.9'
+        jdk 'jdk17'
     }
 
     stages {
@@ -46,16 +45,18 @@ pipeline {
             }
         }
 
-        stage('Publish Extent Report') {
+        stage('Publish Reports') {
             steps {
-                echo "📊 Publishing Extent Report..."
+                echo "📄 Publishing Test Reports..."
+                junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+                archiveArtifacts artifacts: 'target/surefire-reports/**/*.*', fingerprint: true
                 publishHTML([
-                    reportDir: 'target',
-                    reportFiles: 'extent-report.html',
-                    reportName: 'Extent Report',
-                    keepAll: true,
+                    allowMissing: false,
                     alwaysLinkToLastBuild: true,
-                    allowMissing: true
+                    keepAll: true,
+                    reportDir: 'test-output',   // Path where TestNG generates HTML
+                    reportFiles: 'index.html', // More reliable than index.html
+                    reportName: 'TestNG HTML Report'
                 ])
             }
         }
@@ -63,8 +64,8 @@ pipeline {
 
     post {
         always {
-            echo "📁 Archiving reports..."
-            archiveArtifacts artifacts: 'target/**/*.html', fingerprint: true
+            echo "📁 Archiving additional reports..."
+            archiveArtifacts artifacts: 'test-output/**/*.html', fingerprint: true
         }
         success {
             echo "✅ Build succeeded!"

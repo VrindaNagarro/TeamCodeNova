@@ -22,6 +22,9 @@ public class LoginTest extends BaseTest {
         String baseUrl = System.getenv("BASE_URL");
         String username = System.getenv("USERNAME");
         String password = System.getenv("PASSWORD");
+        System.out.println("Base URL: " + baseUrl);
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
         if (baseUrl == null || baseUrl.isEmpty()) {
             baseUrl = ConfigManager.get("base.url");
             username=ConfigManager.get("base.username");
