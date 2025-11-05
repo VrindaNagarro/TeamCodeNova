@@ -47,17 +47,19 @@ pipeline {
 
         stage('Publish Reports') {
             steps {
+            sh 'ls -R test-output || echo "No test-output found!"'
+
                 echo "📄 Publishing Test Reports..."
                 junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
                 archiveArtifacts artifacts: 'target/surefire-reports/**/*.*', fingerprint: true
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'test-output',   // Path where TestNG generates HTML
-                    reportFiles: 'index.html', // More reliable than index.html
-                    reportName: 'TestNG HTML Report'
-                ])
+               publishHTML([
+                   allowMissing: false,
+                   alwaysLinkToLastBuild: true,
+                   keepAll: true,
+                   reportDir: 'test-output',
+                   reportFiles: 'index.html',
+                   reportName: 'TestNG_Report'
+               ])
             }
         }
     }
