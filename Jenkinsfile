@@ -7,7 +7,6 @@ pipeline {
         TEST_PASS   = credentials('testpass-env')
         BROWSER     = 'chrome'
         ENVIRONMENT = 'qa'
-        HEADLESS=false
     }
 
     tools {
@@ -42,7 +41,7 @@ pipeline {
                         -Dusername=${TEST_USER} \
                         -Dpassword=${TEST_PASS} \
                         -Dbrowser=${BROWSER}
-                        -Dheadless=${HEADLESS}
+                        -Dheadless=false
                 '''
             }
         }
