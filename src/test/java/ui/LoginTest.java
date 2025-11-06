@@ -27,10 +27,10 @@ public class LoginTest extends BaseTest {
         System.out.println("Password: " + password);
         if (baseUrl == null || baseUrl.isEmpty()) {
             baseUrl = ConfigManager.get("base.url");
-            username=ConfigManager.get("base.username");
-            password=ConfigManager.get("base.password");
+            username = ConfigManager.get("base.username");
+            password = ConfigManager.get("base.password");
         }
         loginpage.navigateToLoginPage(baseUrl);
-        loginpage.login(username,password);
+        loginpage.login(username, password);
     }
 }
