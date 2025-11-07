@@ -4,6 +4,8 @@
     <test name="Tests">
         <classes>
             <class name="ui.LoginTest"/>
+            <class name="api.UserApiTest"/>
+            <class name="mobile.WikipediaTest"/>
         </classes>
     </test>
 </suite>
