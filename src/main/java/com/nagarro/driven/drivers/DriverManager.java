@@ -6,10 +6,8 @@ import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
-import java.net.URL;
 
 public class DriverManager {
-
     private static AppiumDriver driver;
 
     public static void initDriver() throws Exception {
@@ -23,8 +21,7 @@ public class DriverManager {
             caps.setCapability("appActivity", ConfigManager.get("appActivity"));
             caps.setCapability("autoGrantPermissions", true);
             caps.setCapability("newCommandTimeout", 300);
-
-            driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), caps);
+            driver = new AndroidDriver(MobileService.getAppiumService(), caps);
         }
     }
 
