@@ -3,15 +3,15 @@ package com.nagarro.driven.reporting;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.nagarro.driven.utils.TestReportLogger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import org.testng.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -24,26 +24,35 @@ public class ExtentReportListener implements ITestListener {
     public void onTestStart(ITestResult result) {
         ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName());
         test.set(extentTest);
+        TestReportLogger.setExtentTest(extentTest); // page objects can log
+        extentTest.log(Status.INFO, "🚀 Starting test: " + result.getMethod().getMethodName());
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        test.get().log(Status.PASS, "Test Passed: " + result.getMethod().getMethodName());
+        test.get().pass("✅ Test passed: " + result.getMethod().getMethodName());
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        test.get().log(Status.FAIL, "Test Failed: " + result.getThrowable());
+        test.get().fail("❌ Test failed: " + result.getThrowable());
 
-        // Attach screenshot if WebDriver is available
+        // Capture screenshot if WebDriver available
         Object testClass = result.getInstance();
         try {
-            WebDriver driver = (WebDriver) testClass.getClass().getField("driver").get(testClass);
-            String screenshotPath = captureScreenshot(driver, result.getMethod().getMethodName());
+            Field driverField = testClass.getClass().getDeclaredField("driver");
+            driverField.setAccessible(true);
+            WebDriver driver = (WebDriver) driverField.get(testClass);
+            String screenshotPath = takeScreenshot(driver, result.getMethod().getMethodName());
             test.get().addScreenCaptureFromPath(screenshotPath);
         } catch (Exception e) {
-            test.get().log(Status.WARNING, "Screenshot not captured: " + e.getMessage());
+            test.get().warning("⚠️ Screenshot not captured: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        test.get().skip("⚠️ Test skipped: " + result.getMethod().getMethodName());
     }
 
     @Override
@@ -51,12 +60,12 @@ public class ExtentReportListener implements ITestListener {
         extent.flush();
     }
 
-    private String captureScreenshot(WebDriver driver, String testName) throws IOException {
+    private String takeScreenshot(WebDriver driver, String testName) throws IOException {
+        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String folderPath = "reports/screenshots/";
         Files.createDirectories(Paths.get(folderPath));
-        String filePath = folderPath + testName + ".png";
-        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        Files.copy(src.toPath(), Paths.get(filePath));
-        return filePath;
+        String path = folderPath + testName + ".png";
+        Files.copy(src.toPath(), Paths.get(path));
+        return path;
     }
 }

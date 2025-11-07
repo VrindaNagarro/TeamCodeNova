@@ -1,6 +1,7 @@
 package com.nagarro.driven.pageObjects;
 
 import com.nagarro.driven.base.BasePage;
+import com.nagarro.driven.utils.TestReportLogger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -16,18 +17,22 @@ public class loginPage extends BasePage {
     }
 
     public void navigateToLoginPage(String url) {
+        TestReportLogger.info("Navigating to Login Page: " + url);
         this.driver.get(url);
     }
 
     public void enterUsername(String username) {
+        TestReportLogger.info("Entering username: " + username);
         type(usernameField, username);
     }
 
     public void enterPassword(String password) {
+        TestReportLogger.info("Entering password.");
         type(passwordField, password);
     }
 
     public void clickLogin() {
+        TestReportLogger.info("Clicking on Login button.");
         click(loginButton);
     }
 

@@ -1,0 +1,7 @@
+[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - BaseUrl:null
+[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - Username: vrindasharma
+[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - Password: null
+[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - Navigating to Login Page: https://espocrm.espocloud.com
+[2025-11-07 17:34:43] INFO  com.nagarro.driven.utils.TestReportLogger - Entering username: admin
+[2025-11-07 17:34:45] INFO  com.nagarro.driven.utils.TestReportLogger - Entering password.
+[2025-11-07 17:34:46] INFO  com.nagarro.driven.utils.TestReportLogger - Clicking on Login button.
