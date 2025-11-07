@@ -2,13 +2,15 @@ package ui;
 
 import com.nagarro.driven.base.BaseTest;
 import com.nagarro.driven.config.ConfigManager;
-import org.testng.Assert;
 import com.nagarro.driven.pageObjects.loginPage;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.logging.Logger;
+
 public class LoginTest extends BaseTest {
+
+    private static final Logger LOGGER = Logger.getLogger(LoginTest.class.getName());
 
     public loginPage loginpage;
 
@@ -22,9 +24,9 @@ public class LoginTest extends BaseTest {
         String baseUrl = System.getenv("BASE_URL");
         String username = System.getenv("USERNAME");
         String password = System.getenv("PASSWORD");
-        System.out.println("Base URL: " + baseUrl);
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
+        LOGGER.info("Base URL: " + baseUrl);
+        LOGGER.info("Username: " + username);
+        LOGGER.info("Password: " + password);
         if (baseUrl == null || baseUrl.isEmpty()) {
             baseUrl = ConfigManager.get("base.url");
             username = ConfigManager.get("base.username");
