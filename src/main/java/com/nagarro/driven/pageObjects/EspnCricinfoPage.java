@@ -1,20 +1,19 @@
 package com.nagarro.driven.pageObjects;
 
 import com.nagarro.driven.base.BasePage;
+import com.nagarro.driven.config.ConfigManager;
 import com.nagarro.driven.utils.ExcelReader;
 import com.nagarro.driven.utils.TestReportLogger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -275,4 +274,81 @@ public class EspnCricinfoPage extends BasePage {
             return "";
         }
     }
+    /** Close pop-up if present */
+    public void closePopupIfVisible() {
+        try {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Not Now')]")));
+                WebElement notNowButton = driver.findElement(By.xpath("//button[contains(text(),'Not Now')]"));
+                if (notNowButton.isDisplayed()) {
+                    notNowButton.click();
+                }
+            } catch (Exception e) {
+                // Do nothing if button not found or not visible after 30 seconds
+            }
+    }
+
+    /** Hover on Teams menu */
+    public void hoverOnTeamsMenu() {
+        try {
+            WebElement teamsMenu = driver.findElement(By.xpath("//a[text()='Teams']"));
+            actions.moveToElement(teamsMenu).perform();
+            TestReportLogger.info("Hovered on Teams menu successfully.");
+        } catch (Exception e) {
+            TestReportLogger.info("Failed to hover on Teams menu: " + e.getMessage());
+        }
+    }
+
+    /** Click on a specific team */
+    public void clickTeam(String team) {
+        try {
+            String xpath = "//a[contains(@href, '/team/" + team.toLowerCase() + "') and .//span[normalize-space(text())='" + team + "']]";
+            WebElement teamLink = driver.findElement(By.xpath(xpath));
+            teamLink.click();
+            TestReportLogger.info("Clicked on Team: " + team);
+        } catch (Exception e) {
+            TestReportLogger.info("Team link not found for: " + team + " — " + e.getMessage());
+            throw e;
+        }
+    }
+
+    /** Click on Stats tab */
+    public void clickStatsTab(String team) {
+        try {
+            String statsXpath = "//a[contains(@href,'/team/" + team.toLowerCase() + "') and .//span[normalize-space(text())='Stats']]";
+            WebElement statsTab = driver.findElement(By.xpath(statsXpath));
+            statsTab.click();
+            TestReportLogger.info("Clicked on Stats tab for: " + team);
+        } catch (Exception e) {
+            TestReportLogger.info("Stats tab not found for: " + team + " — " + e.getMessage());
+            throw e;
+        }
+    }
+
+    /** Verify stats headers are visible */
+    public void verifyStatsHeaders() {
+        WebElement topRunScorers = driver.findElement(By.xpath("//span[text()='Top Run Scorers']"));
+        WebElement topWicketTakers = driver.findElement(By.xpath("//span[text()='Top Wicket Takers']"));
+
+        if (topRunScorers.isDisplayed() && topWicketTakers.isDisplayed()) {
+            TestReportLogger.info("✅ Verified stats headers: Top Run Scorers & Top Wicket Takers");
+        } else {
+            throw new AssertionError("❌ Stats headers not visible.");
+        }
+    }
+
+    /** Click 'View full list' based on format */
+    public void clickViewFullList(String format) {
+        try {
+            String xpath = "//span[text()='Top Run Scorers']/ancestor::div[contains(@class,'ds-w-full')]//span[text()='"
+                    + format + "']/ancestor::div[contains(@class,'ds-flex')]//a[.//span[contains(text(),'View full list')]]";
+            WebElement viewFullList = driver.findElement(By.xpath(xpath));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", viewFullList);
+            viewFullList.click();
+            TestReportLogger.info("Clicked 'View full list' for format: " + format);
+        } catch (Exception e) {
+            TestReportLogger.info("View Full List not found for format: " + format + " — " + e.getMessage());
+        }
+    }
 }
+
