@@ -1,7 +1,3 @@
-[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - BaseUrl:null
-[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - Username: vrindasharma
-[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - Password: null
-[2025-11-07 17:34:37] INFO  com.nagarro.driven.utils.TestReportLogger - Navigating to Login Page: https://espocrm.espocloud.com
-[2025-11-07 17:34:43] INFO  com.nagarro.driven.utils.TestReportLogger - Entering username: admin
-[2025-11-07 17:34:45] INFO  com.nagarro.driven.utils.TestReportLogger - Entering password.
-[2025-11-07 17:34:46] INFO  com.nagarro.driven.utils.TestReportLogger - Clicking on Login button.
+[2025-11-08 14:27:33] INFO  com.nagarro.driven.utils.TestReportLogger - Navigating to URL: https://www.espncricinfo.com/
+[2025-11-08 14:27:42] WARN  com.nagarro.driven.utils.TestReportLogger - ⚠️ 403 received for https://www.espncricinfo.com/live-cricket-score — verifying via browser navigation fallback...
+[2025-11-08 14:27:48] WARN  com.nagarro.driven.utils.TestReportLogger - ⚠️ 403 received for https://www.espncricinfo.com/ci/engine/series/index.html?view=season — verifying via browser navigation fallback...
