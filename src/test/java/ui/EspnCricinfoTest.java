@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,13 @@ public class EspnCricinfoTest extends BaseTest {
 
     @Test
     public void verifyEspnCricinfoMenus() {
-        String inputPath = "C:\\Users\\vrindasharma\\Downloads\\AutomATAhon\\src\\main\\resources\\TestData\\Challenge A1 - Source File.xlsx";
+        String inputPath = System.getProperty("user.dir")
+                + File.separator + "src"
+                + File.separator + "main"
+                + File.separator + "resources"
+                + File.separator + "TestData"
+                + File.separator + "Challenge A1 - Source File.xlsx";
+
         String outputPath = "reports/EspnCricinfoResults.xlsx";
 
         EspnCricinfoPage espn = new EspnCricinfoPage(driver);
